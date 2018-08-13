@@ -1,0 +1,61 @@
+trade_no:2018081321001004940200635444
+
+out_trade_no:201881322180632
+
+total_amount:0.01
+第二笔交易
+trade_no:2018081321001004940200635516
+
+out_trade_no:2018813233821334
+
+total_amount:2.00
+
+交易退款申请结果：
+code:10000
+
+msg:Success
+
+sub_code:
+
+sub_msg:
+
+trade_no:2018081321001004940200635516
+
+out_trade_no:2018813233821334
+
+buyer_logon_id:pwc***@sandbox.com
+
+fund_change:Y
+
+buyer_user_id:2088102172101948
+
+refund_fee:0.10
+
+send_back_fee:0.00
+
+gmt_refund_pay:2018-08-13 23:39:33
+
+退款查询：
+{
+	"alipay_trade_fastpay_refund_query_response": {
+		"code": "10000",
+		"msg": "Success",
+		"out_request_no": "1",
+		"out_trade_no": "2018813233821334",
+		"refund_amount": "0.10",
+		"total_amount": "2.00",
+		"trade_no": "2018081321001004940200635516"
+	},
+	"sign": "Yz5iRRhwSEZJ/SdIdkBYGhBAJJ5KNhZr4o0m8gAcyYgoUWs7vCgvwK2q7ebmB2PeWwqJqGkb+/5ec4s9RT7wGHtHbo0nMx1DiHJcgfsz52Osjz/qC5e0RIeG49/SvQj+smGHQA0ZMuE4jYccfulk229KoOOHoYJYl7n1l/pfd7FN7C5j8uaVLx3hgeOosxvBsZXq1VINDAl/YlxjXBt8U6QV1SgSw48ZPK6g+PFGWBf9xCiqocFk2MNzu/LNqF0yaFarNWqCJ/mwQyZbXtUTiANQmqWFqa640X2xupxLoGV0yxljSEFxCfaW7ONJO7sqjCBB2KnvKvolMXE1JeeQaw=="
+}
+
+通知商户：
+trade_no:2018081321001004940200635517
+
+out_trade_no:20188132338213355
+
+total_amount:3.00
+
+97635.88
+97735.88
+97835.88
