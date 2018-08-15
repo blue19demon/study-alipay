@@ -8,3 +8,5 @@ spring:
         enabled: false
       resources:
         static-locations: classpath:/WEB-INF/resources
+      favicon:
+        enabled: true

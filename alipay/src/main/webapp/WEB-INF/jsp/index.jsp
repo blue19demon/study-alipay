@@ -4,6 +4,8 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+<link rel="icon" type="image/x-icon" href="/static/favicon.ico">
 <title>支付宝电脑网站支付</title>
 <style>
 * {
@@ -198,7 +200,7 @@ h2 {
 	<div id="main">
 		<div id="tabhead" class="tab-head">
 			<h2 id="tab1" class="selected" name="tab">PC付 款</h2>
-			<h2 id="tab5" name="tab">WAP付款</h2>
+			<h2 id="tab6" name="tab">WAP付款</h2>
 			<h2 id="tab2" name="tab">交 易 查 询</h2>
 			<h2 id="tab3" name="tab">退 款</h2>
 			<h2 id="tab4" name="tab">退 款 查 询</h2>
@@ -240,7 +242,7 @@ h2 {
 		</form>
 		<form name="wapPay" action="./quickWapWay.do" method="post"
 			target="_blank">
-			<div id="body1" class="show" name="divcontent">
+			<div id="body6"  class="tab-content" name="divcontent">
 				<dl class="content">
 					<dt>商户订单号 ：</dt>
 					<dd>
