@@ -34,7 +34,7 @@ public class AliPayApi {
 			    model.setAmount(total_amount);
 			    model.setPayerShowName("测试退款");
 			    model.setPayerRealName("沙箱环境");//账户真实名称
-			    model.setRemark("javen测试单笔转账到支付宝");
+			    model.setRemark("java测试单笔转账到支付宝");
 			    Boolean isSuccess=false;
 			    try {
 					isSuccess = AliPayApi.transfer(model);
@@ -42,19 +42,7 @@ public class AliPayApi {
 					e.printStackTrace();
 			    }
 			    System.out.println(isSuccess);*/
-			AlipayDataDataserviceBillDownloadurlQueryModel model = new AlipayDataDataserviceBillDownloadurlQueryModel();
 			
-			/**
-			 * 账单时间：日账单格式为yyyy-MM-dd，月账单格式为yyyy-MM。
-			 */
-			model.setBillDate("2018-08-14");
-			/**
-			 * 账单类型，商户通过接口或商户经开放平台授权后其所属服务商通过接口可以获取以下账单类型：
-			 * trade、signcustomer；
-			 * trade指商户基于支付宝交易收单的业务账单；
-			 * signcustomer是指基于商户支付宝余额收入及支出等资金变动的帐务账单
-			 */
-			model.setBillType("trade");
 			System.out.println(billDownloadurlQuery("{" +
 					"\"bill_type\":\"trade\"," +
 					"\"bill_date\":\"2018-08-13\"" +

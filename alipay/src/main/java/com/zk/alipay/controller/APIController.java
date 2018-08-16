@@ -1,5 +1,6 @@
 package com.zk.alipay.controller;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -13,19 +14,31 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import com.alibaba.fastjson.JSONObject;
+import com.alipay.api.AlipayApiException;
 import com.alipay.api.AlipayClient;
 import com.alipay.api.DefaultAlipayClient;
+import com.alipay.api.domain.AlipayFundTransOrderQueryModel;
+import com.alipay.api.domain.AlipayFundTransToaccountTransferModel;
 import com.alipay.api.internal.util.AlipaySignature;
+import com.alipay.api.request.AlipayDataDataserviceBillDownloadurlQueryRequest;
+import com.alipay.api.request.AlipayFundTransOrderQueryRequest;
+import com.alipay.api.request.AlipayFundTransToaccountTransferRequest;
 import com.alipay.api.request.AlipayTradeCancelRequest;
 import com.alipay.api.request.AlipayTradeCloseRequest;
 import com.alipay.api.request.AlipayTradeFastpayRefundQueryRequest;
 import com.alipay.api.request.AlipayTradeQueryRequest;
 import com.alipay.api.request.AlipayTradeRefundRequest;
+import com.alipay.api.response.AlipayDataDataserviceBillDownloadurlQueryResponse;
+import com.alipay.api.response.AlipayFundTransOrderQueryResponse;
+import com.alipay.api.response.AlipayFundTransToaccountTransferResponse;
 import com.zk.alipay.config.AlipayConfig;
+import com.zk.alipay.request.BillDownloadBizContent;
 import com.zk.alipay.request.PayCloseBizContent;
 import com.zk.alipay.request.TradeQueryBizContent;
 import com.zk.alipay.request.TradeRefundBizContent;
 import com.zk.alipay.request.TradeRefundQueryBizContent;
+import com.zk.alipay.response.AlipayTransferResponse;
+import com.zk.alipay.response.BillDownloadResponse;
 import com.zk.alipay.response.TradeCloseResponse;
 import com.zk.alipay.response.TradeQueryResponse;
 import com.zk.alipay.response.TradeRefundQueryResponse;
@@ -327,4 +340,183 @@ public class APIController {
 		}
 		return "trade_cancel";
 	}
+	
+
+	/**
+	 * 单笔转账到支付宝账户接口是基于支付宝的资金处理能力，为了满足支付宝商家向其他支付宝账户转账的需求，
+	 *  针对有部分开发能力的商家，提供通过API接口完成支付宝账户间的转账的功能。
+	 *  该接口适用行业较广，比如商家间的货款结算，商家给个人用户发放佣金等。
+	 * @param amount 提现金额
+	 * @param payerShowName 付款方姓名
+	 * @param payeeAccount 收款方账户
+	 * @param payerRealName 收款方真实姓名
+	 * @param remark 转账备注（支持200个英文/100个汉字）。
+           当付款方为企业账户，且转账金额达到（大于等于）50000元，remark不能为空。收款方可见，会展示在收款用户的收支详情中。
+	 * @param model 
+	 * @return
+	 */
+	@PostMapping("/transfer.do")
+	public String transfer(
+			String amount,
+			String payerShowName,
+			String payeeAccount,
+			String payerRealName,
+			String remark, 
+			Model model) {
+		try {
+			//获得初始化的AlipayClient
+			AlipayClient alipayClient = new DefaultAlipayClient(
+					alipayConfig.getGatewayUrl(), 
+					alipayConfig.getApp_id(),
+					alipayConfig.getMerchant_private_key(), 
+					alipayConfig.getData_type(), 
+					alipayConfig.getCharset(),
+					alipayConfig.getAlipay_public_key(),
+					alipayConfig.getSign_type());
+		
+			AlipayFundTransToaccountTransferModel data = new AlipayFundTransToaccountTransferModel();
+			data.setOutBizNo(new Date().getTime()+"");//生成订单号
+
+			// 收款方账户类型。可取值：
+			// 1、ALIPAY_USERID：支付宝账号对应的支付宝唯一用户号。以2088开头的16位纯数字组成。
+			// 2、ALIPAY_LOGONID：支付宝登录号，支持邮箱和手机号格式。
+			data.setPayeeType("ALIPAY_LOGONID");//固定值
+			data.setPayeeAccount(payeeAccount);//转账收款账户
+			data.setAmount(amount);
+			data.setPayerShowName(payerShowName);
+			data.setPayerRealName(payerRealName);//账户真实名称
+		    data.setRemark(remark);
+		    Map<String,Object> isSuccess=transfer(data,alipayClient);
+		    String result = null;
+		    if(isSuccess.get("success")==Boolean.TRUE) {
+		    	result=(String) isSuccess.get("result");
+		    }
+			//输出
+		    System.out.println(result);
+		    if(!"".equals(result)) {
+		    	AlipayTransferResponse alipayTransferResponse=JSONObject.parseObject(result, AlipayTransferResponse.class);
+		    	model.addAttribute("transferResponse", alipayTransferResponse);
+		    }
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return "transfer";
+	}
+	
+	/**
+	 * 为方便商户快速查账，支持商户通过本接口获取商户离线账单下载地址
+	 * @param bill_type 
+	 * 账单类型，商户通过接口或商户经开放平台授权后其所属服务商通过接口可以获取以下账单类型：trade、signcustomer；
+	 * trade指商户基于支付宝交易收单的业务账单；
+	 * signcustomer是指基于商户支付宝余额收入及支出等资金变动的帐务账单
+	 * @param bill_date 账单时间：日账单格式为yyyy-MM-dd，月账单格式为yyyy-MM
+	 * @param model
+	 * @return
+	 */
+	@PostMapping("/billDownload.do")
+	public String billDownload(
+			String bill_type,
+			String bill_date, 
+			Model model) {
+		try {
+			//获得初始化的AlipayClient
+			AlipayClient alipayClient = new DefaultAlipayClient(
+					alipayConfig.getGatewayUrl(), 
+					alipayConfig.getApp_id(),
+					alipayConfig.getMerchant_private_key(), 
+					alipayConfig.getData_type(), 
+					alipayConfig.getCharset(),
+					alipayConfig.getAlipay_public_key(),
+					alipayConfig.getSign_type());
+		
+			BillDownloadBizContent data=
+					new BillDownloadBizContent()
+		            .setBill_date(bill_date)
+		            .setBill_type(bill_type);
+			String result =billDownloadurlQuery(JSONObject.toJSONString(data),alipayClient);
+			BillDownloadResponse billDownloadResponse=JSONObject.parseObject(result, BillDownloadResponse.class);
+	    	model.addAttribute("billDownloadResponse", billDownloadResponse);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return "bill_download";
+	}
+	
+	/**
+	    * 单笔转账到支付宝账户
+	    * https://doc.open.alipay.com/docs/doc.htm?spm=a219a.7629140.0.0.54Ty29&treeId=193&articleId=106236&docType=1
+	    * @param content
+	    * @return
+	    * @throws AlipayApiException
+	    */
+	   public  Map<String,Object> transfer(AlipayFundTransToaccountTransferModel model,AlipayClient alipayClient) throws AlipayApiException{
+	       AlipayFundTransToaccountTransferResponse response = transferToResponse(model,alipayClient);
+	       String result = response.getBody();
+	       System.out.println("transfer result>"+result);
+	       Map<String,Object> map =new HashMap<>();
+	       map.put("success", false);
+	       if (response.isSuccess()) {
+	    	   map.put("success", true);
+	    	   map.put("result", result);
+	    	   return map;
+	       } else {
+	           //调用查询接口查询数据
+	           JSONObject jsonObject = JSONObject.parseObject(result);
+	           String out_biz_no = jsonObject.getJSONObject("alipay_fund_trans_toaccount_transfer_response").getString("out_biz_no");
+	           AlipayFundTransOrderQueryModel queryModel = new AlipayFundTransOrderQueryModel();
+	           model.setOutBizNo(out_biz_no);
+	           String thisResult = transferQuery(queryModel,alipayClient);
+	           if (!"".equals(thisResult)) {
+	        	   map.put("success", true);
+	        	   map.put("result", thisResult);
+	        	   return map;
+	           }
+	       }
+	       return map;
+	   }
+	   
+	   public  AlipayFundTransToaccountTransferResponse transferToResponse(AlipayFundTransToaccountTransferModel model,AlipayClient alipayClient) throws AlipayApiException{
+	       AlipayFundTransToaccountTransferRequest request = new AlipayFundTransToaccountTransferRequest();
+	       request.setBizModel(model);
+	       return alipayClient.execute(request);
+	   }
+	   
+	   /**
+	    * 转账查询接口
+	    * @param content
+	    * @return
+	    * @throws AlipayApiException
+	    */
+	   public  String transferQuery(AlipayFundTransOrderQueryModel model,AlipayClient alipayClient) throws AlipayApiException{
+	       AlipayFundTransOrderQueryResponse response = transferQueryToResponse(model,alipayClient);
+	       System.out.println("transferQuery result>"+response.getBody());
+	       if(response.isSuccess()){
+	           return response.getBody();
+	       }
+	       return null;
+	   }
+	   
+	   public  AlipayFundTransOrderQueryResponse transferQueryToResponse(AlipayFundTransOrderQueryModel model,AlipayClient alipayClient) throws AlipayApiException{
+	       AlipayFundTransOrderQueryRequest request = new AlipayFundTransOrderQueryRequest();
+	       request.setBizModel(model);
+	       return alipayClient.execute(request);
+	   }
+	   
+	   /**
+	    * 查询对账单下载地址
+	    * @param bizContent
+	    * @return
+	    * @throws AlipayApiException
+	    */
+	   public static String billDownloadurlQuery(String bizContent,AlipayClient alipayClient) throws AlipayApiException{
+	       AlipayDataDataserviceBillDownloadurlQueryResponse response =  billDownloadurlQueryToResponse(bizContent,alipayClient);
+	       System.out.println("AlipayDataDataserviceBillDownloadurlQueryResponse result>"+response.getBody());
+	       return response.getBody();
+	   }
+	   
+	   public static AlipayDataDataserviceBillDownloadurlQueryResponse  billDownloadurlQueryToResponse (String bizContent,AlipayClient alipayClient) throws AlipayApiException{
+	       AlipayDataDataserviceBillDownloadurlQueryRequest request = new AlipayDataDataserviceBillDownloadurlQueryRequest();
+	       request.setBizContent(bizContent);
+	       return alipayClient.execute(request);
+	   }
 }

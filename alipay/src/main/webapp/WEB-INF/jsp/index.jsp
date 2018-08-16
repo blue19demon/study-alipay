@@ -34,7 +34,7 @@ body {
 
 h2 {
 	border-bottom: solid #02aaf1 2px;
-	width: 200px;
+	width: 150px;
 	height: 25px;
 	margin: 0;
 	float: left;
@@ -114,6 +114,15 @@ h2 {
 	border: 0;
 	-webkit-border-radius: 0;
 	-webkit-appearance: none;
+}
+
+.content dd select {
+	width: 85%;
+	height: 28px;
+	border: 0;
+	-webkit-border-radius: 0;
+	-webkit-appearance: none;
+	text-align: center;
 }
 
 #foot {
@@ -200,11 +209,13 @@ h2 {
 	<div id="main">
 		<div id="tabhead" class="tab-head">
 			<h2 id="tab1" class="selected" name="tab">PC付 款</h2>
-			<h2 id="tab6" name="tab">WAP付款</h2>
 			<h2 id="tab2" name="tab">交 易 查 询</h2>
 			<h2 id="tab3" name="tab">退 款</h2>
 			<h2 id="tab4" name="tab">退 款 查 询</h2>
 			<h2 id="tab5" name="tab">交 易 关 闭</h2>
+			<h2 id="tab6" name="tab">WAP付款</h2>
+			<h2 id="tab7" name="tab">提 现</h2>
+			<h2 id="tab8" name="tab">对账单下载</h2>
 		</div>
 		<form name="alipayment" action="./fastInstantTadePay.do" method="post"
 			target="_blank">
@@ -240,35 +251,7 @@ h2 {
 				</dl>
 			</div>
 		</form>
-		<form name="wapPay" action="./quickWapWay.do" method="post"
-			target="_blank">
-			<div id="body6"  class="tab-content" name="divcontent">
-				<dl class="content">
-					<dt>商户订单号 ：</dt>
-					<dd>
-						<input id="WIDout_trade_no" name="WIDout_trade_no" />
-					</dd>
-					<hr class="one_line">
-					<dt>订单名称 ：</dt>
-					<dd>
-						<input id="WIDsubject" name="WIDsubject" />
-					</dd>
-					<hr class="one_line">
-					<dt>付款金额 ：</dt>
-					<dd>
-						<input id="WIDtotal_amount" name="WIDtotal_amount" />
-					</dd>
-					<hr class="one_line">
-					<dt></dt>
-					<dd id="btn-dd">
-						<span class="new-btn-login-sp">
-							<button class="new-btn-login" type="submit"
-								style="text-align: center;">付 款</button>
-						</span> <span class="note-help">如果您点击“付款”按钮，即表示您同意该次的执行操作。</span>
-					</dd>
-				</dl>
-			</div>
-		</form>
+		
 		<form name="tradequery" action="./tradeQuery.do" method="post"
 			target="_blank">
 			<div id="body2" class="tab-content" name="divcontent">
@@ -382,6 +365,102 @@ h2 {
 							<button class="new-btn-login" type="submit"
 								style="text-align: center;">交 易 关 闭</button>
 						</span> <span class="note-help">商户订单号与支付宝交易号二选一，如果您点击“交易关闭”按钮，即表示您同意该次的执行操作。</span>
+					</dd>
+				</dl>
+			</div>
+		</form>
+		
+		<form name="wapPay" action="./quickWapWay.do" method="post"
+			target="_blank">
+			<div id="body6"  class="tab-content" name="divcontent">
+				<dl class="content">
+					<dt>商户订单号 ：</dt>
+					<dd>
+						<input id="WIDout_trade_no" name="WIDout_trade_no" />
+					</dd>
+					<hr class="one_line">
+					<dt>订单名称 ：</dt>
+					<dd>
+						<input id="WIDsubject" name="WIDsubject" />
+					</dd>
+					<hr class="one_line">
+					<dt>付款金额 ：</dt>
+					<dd>
+						<input id="WIDtotal_amount" name="WIDtotal_amount" />
+					</dd>
+					<hr class="one_line">
+					<dt></dt>
+					<dd id="btn-dd">
+						<span class="new-btn-login-sp">
+							<button class="new-btn-login" type="submit"
+								style="text-align: center;">付 款</button>
+						</span> <span class="note-help">如果您点击“付款”按钮，即表示您同意该次的执行操作。</span>
+					</dd>
+				</dl>
+			</div>
+		</form>
+		
+		<form name="transfer" action="./transfer.do" method="post"
+			target="_blank">
+			<div id="body7" class="tab-content" name="divcontent">
+				<dl class="content">
+					<dt>提现金额 ：</dt>
+					<dd>
+						<input id="amount" name="amount" />
+					</dd>
+					<hr class="one_line">
+					<dt>账目名称 ：</dt>
+					<dd>
+						<input id="payerShowName" name="payerShowName" />
+					</dd>
+					<hr class="one_line">
+					<dt>提现收款账户 ：</dt>
+					<dd>
+						<input id="payeeAccount" name="payeeAccount" value="pwcyeq1339@sandbox.com"/>
+					</dd>
+					<hr class="one_line">
+					<dt>提现收款人真实姓名 ：</dt>
+					<dd>
+						<input id="payerRealName" name="payerRealName" value="沙箱环境"/>
+					</dd>
+					<hr class="one_line">
+					<dt>备注 ：</dt>
+					<dd>
+						<input id="remark" name="remark" />
+					</dd>
+					<hr class="one_line">
+					<dt></dt>
+					<dd id="btn-dd">
+						<span class="new-btn-login-sp">
+							<button class="new-btn-login" type="submit"
+								style="text-align: center;">提现</button>
+					</dd>
+				</dl>
+			</div>
+		</form>
+		
+		<form name="billDownload" action="./billDownload.do" method="post"
+			target="_blank">
+			<div id="body8" class="tab-content" name="divcontent">
+				<dl class="content">
+					<dt>对账单类型 ：</dt>
+					<dd>
+						<select id="bill_type" name="bill_type">
+						  <option value="trade">基于支付宝交易收单的业务账单</option>
+						  <option value="signcustomer">商户支付宝余额收入及支出等资金变动的帐务账单</option>
+						</select>
+					</dd>
+					<hr class="one_line">
+					<dt>对账日期 ：</dt>
+					<dd>
+						<input id="bill_date" name="bill_date" value="2018-08-13"/>
+					</dd>
+					<hr class="one_line">
+					<dt></dt>
+					<dd id="btn-dd">
+						<span class="new-btn-login-sp">
+							<button class="new-btn-login" type="submit"
+								style="text-align: center;">提现</button>
 					</dd>
 				</dl>
 			</div>

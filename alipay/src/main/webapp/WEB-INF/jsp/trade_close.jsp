@@ -9,10 +9,10 @@
 </head>
 <body>
 交易关闭结果：
-<h3>code:${tradeCloseResponse.alipay_trade_close_response.code}</h3>
-<h3>msg:${tradeCloseResponse.alipay_trade_close_response.msg}</h3>
-<h3>sub_code:${tradeCloseResponse.alipay_trade_close_response.sub_code}</h3>
-<h3>sub_msg:${tradeCloseResponse.alipay_trade_close_response.sub_msg}</h3>
-<h3>out_trade_no:${tradeCloseResponse.alipay_trade_close_response.out_trade_no}</h3>
+<h5>code:${tradeCloseResponse.alipay_trade_close_response.code}</h5>
+<h5>msg:${tradeCloseResponse.alipay_trade_close_response.msg}</h5>
+<h5>sub_code:${tradeCloseResponse.alipay_trade_close_response.sub_code}</h5>
+<h5>sub_msg:${tradeCloseResponse.alipay_trade_close_response.sub_msg}</h5>
+<h5>out_trade_no:${tradeCloseResponse.alipay_trade_close_response.out_trade_no}</h5>
 </body>
 </html>

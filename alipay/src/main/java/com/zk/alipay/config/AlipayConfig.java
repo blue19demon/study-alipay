@@ -18,17 +18,17 @@ public class AlipayConfig {
 	private String alipay_public_key = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAuQm5GBcgZtj1G6KhXwXY7rKzMwrm9kcBJFURq7xtb5nsaLasfl6vfKtzTDtnfIKOZayTVfqJKS1hrgAIYDfddZOJHMYAwte80D4kd1IkVc4B8PxHELs76rxaVR+fz69BzIzuyySJcY85ceHVDzdlQzDzHgdWAvkMpqt0HFuWUUlvAeK8wF+PXiZAwzmd8vtqRuJ08amG2gEEIuhgXlBD9MxFKMGgHaaIAaunHnWyWLrqtJispr/mlFx0zXa8aSMhLU/xoHspMTm/gpwHAmSt7ebyj4IkC04SkfMAq5RzQtuf86V6zULAj/zr98+YieOSk2tj1vl/KxtpvyQnpYimPwIDAQAB";
 
 	// 服务器异步通知页面路径 需http://格式的完整路径，不能加?id=123这类自定义参数，必须外网可以正常访问
-	private String notify_url = "http://ey3ebr.natappfree.cc/notifyUrl.do";
+	private String notify_url = "http://tr7e5f.natappfree.cc/notifyUrl.do";
 
 	// 页面跳转同步通知页面路径 需http://格式的完整路径，不能加?id=123这类自定义参数，必须外网可以正常访问
-	private String return_url = "http://ey3ebr.natappfree.cc/returnUrl.htm";
+	private String return_url = "http://tr7e5f.natappfree.cc/returnUrl.htm";
 
 	// 签名方式
 	private String sign_type = "RSA2";
 
 	// 数据格式
 	private String data_type = "json";
-		
+
 	// 字符编码格式
 	private String charset = "utf-8";
 
