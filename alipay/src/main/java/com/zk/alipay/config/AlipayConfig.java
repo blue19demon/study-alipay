@@ -18,10 +18,10 @@ public class AlipayConfig {
 	private String alipay_public_key = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAuQm5GBcgZtj1G6KhXwXY7rKzMwrm9kcBJFURq7xtb5nsaLasfl6vfKtzTDtnfIKOZayTVfqJKS1hrgAIYDfddZOJHMYAwte80D4kd1IkVc4B8PxHELs76rxaVR+fz69BzIzuyySJcY85ceHVDzdlQzDzHgdWAvkMpqt0HFuWUUlvAeK8wF+PXiZAwzmd8vtqRuJ08amG2gEEIuhgXlBD9MxFKMGgHaaIAaunHnWyWLrqtJispr/mlFx0zXa8aSMhLU/xoHspMTm/gpwHAmSt7ebyj4IkC04SkfMAq5RzQtuf86V6zULAj/zr98+YieOSk2tj1vl/KxtpvyQnpYimPwIDAQAB";
 
 	// 服务器异步通知页面路径 需http://格式的完整路径，不能加?id=123这类自定义参数，必须外网可以正常访问
-	private String notify_url = "http://tr7e5f.natappfree.cc/notifyUrl.do";
+	private String notify_url = "http://cf6e6v.natappfree.cc/notifyUrl.do";
 
 	// 页面跳转同步通知页面路径 需http://格式的完整路径，不能加?id=123这类自定义参数，必须外网可以正常访问
-	private String return_url = "http://tr7e5f.natappfree.cc/returnUrl.htm";
+	private String return_url = "http://cf6e6v.natappfree.cc/returnUrl.htm";
 
 	// 签名方式
 	private String sign_type = "RSA2";
@@ -38,7 +38,11 @@ public class AlipayConfig {
 	// 支付宝网关
 	private String log_path = "D:\\";
 	// ↑↑↑↑↑↑↑↑↑↑请在这里配置您的基本信息↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑
-
+	// 支付宝Auth网关
+	private String authReqUrl = "https://openauth.alipaydev.com/oauth2/publicAppAuthorize.htm?app_id=APPID&scope=auth_user&redirect_uri=ENCODED_URL";
+	// 支付宝Auth后接受token地址
+	private String redirect_uri = "http://cf6e6v.natappfree.cc/authUrl.htm";
+			
 	public String getApp_id() {
 		return app_id;
 	}
@@ -117,6 +121,22 @@ public class AlipayConfig {
 
 	public void setLog_path(String log_path) {
 		this.log_path = log_path;
+	}
+	
+	public String getAuthReqUrl() {
+		return authReqUrl;
+	}
+
+	public void setAuthReqUrl(String authReqUrl) {
+		this.authReqUrl = authReqUrl;
+	}
+
+	public String getRedirect_uri() {
+		return redirect_uri;
+	}
+
+	public void setRedirect_uri(String redirect_uri) {
+		this.redirect_uri = redirect_uri;
 	}
 
 	/**

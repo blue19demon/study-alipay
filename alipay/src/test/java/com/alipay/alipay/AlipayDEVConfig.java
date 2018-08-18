@@ -25,14 +25,15 @@ public class AlipayDEVConfig {
 
 	// 数据格式
 	public static String data_type = "json";
-		
+
 	// 字符编码格式
 	public static String charset = "utf-8";
 
 	// 支付宝网关
 	public static String gatewayUrl = "https://openapi.alipaydev.com/gateway.do";
-
-	// 支付宝网关
+	// 支付宝Auth网关
+	public static String authReqUrl = "https://openauth.alipaydev.com/oauth2/appToAppAuth.htm?app_id=APPID&redirect_uri=REDIRECT_URI";
+	
 	public static String log_path = "D:\\";
 
 	/**
